@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # preprocessing
 INPUT_DIR=./input
-OUPUT_DIR=./input
+OUTPUT_DIR=./output
 
-INPUT_FILE="${INPUT_DIR}/2018-06-15 RUN consolidated.csv"
-OUTPUTFILE="${OUTPUT_DIR}/2018-06-15pre.txt"
+INPUT_FILE="${INPUT_DIR}/2018-06-15RUNconsolidated.csv"
+OUTPUT_FILE="${OUTPUT_DIR}/2018-06-15pre.txt"
 
+HLADB_VERSION=3290
 
-python pre.py -i ${INPUT_FILE} -o ${OUTPUT_FILE}
+set -x
+python run/pre.py ${INPUT_FILE} ${OUTPUT_FILE} --hladb_version 3290
 

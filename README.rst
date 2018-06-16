@@ -21,7 +21,7 @@ RUN
 Regigstry of Unmet Need analysis pipeline
 
 
-* Free software: Apache 2.0
+* Free software: LGPL v3
 * Documentation: https://run.readthedocs.io.
 
 
@@ -51,11 +51,11 @@ Allele analysis
 Haplotype Analysis
 ------------------
   1. Perform Genotype Imputation
-  * note if a pair of haplotypes can be identified or not
-  * note which populations carry haplotype(s)
-  * perform Bayes' population classification
-  * perform geospatial analysis on haplotype(s)
-  * Search prognosis tool
+  2. note if a pair of haplotypes can be identified or not
+  3. note which populations carry haplotype(s)
+  4. perform Bayes' population classification
+  5. perform geospatial analysis on haplotype(s)
+  6. Search prognosis tool
     - run for each genotype
     - categorize based on expected genotype frequency
 
