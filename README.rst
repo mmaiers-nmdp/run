@@ -34,28 +34,33 @@ populations that can be identified as a target for future recruitment.
 
 
 
-## 0. preprocessing
-  * validate HLA types
-  * convert to glstring
-  * reduce to ARD
+Preprocessing
+-------------
 
-## 1. allele analysis
-* CWD for 8 alleles (A, B, C, DRB1) x 2
-  * identify how many are not in CWD list
-   
-* Global region analysis for 8 alleles 
-  * (number of regions 0-12)
+  1. vaidate HLA types
+  2. convert to glstring
+  3. reduce to ARD
 
-## 2. Haplotype Analysis
-* Perform Genotype Imputation
+Allele analysis
+---------------
+  1. CWD for 8 alleles (A, B, C, DRB1) x 2
+  2. identify how many are not in CWD list
+  3. Global region analysis for 8 alleles 
+     - (number of regions 0-12)
+
+Haplotype Analysis
+------------------
+  1. Perform Genotype Imputation
   * note if a pair of haplotypes can be identified or not
   * note which populations carry haplotype(s)
   * perform Bayes' population classification
   * perform geospatial analysis on haplotype(s)
-    
-* Search prognosis tool
-  * run for each genotype
-  * categorize based on expected genotype frequency
+  * Search prognosis tool
+    - run for each genotype
+    - categorize based on expected genotype frequency
 
 
-
+Credits
+-------
+World Marrow Donor Assocation `WMDA
+<http://wmda.info/>`_.
