@@ -1,0 +1,87 @@
+#!/usr/bin/env perl
+##############################################################################
+# SCRIPT NAME:	flagCWD
+# DESCRIPTION:	flag alleles as being CWD2
+#
+# DATE WRITTEN: 2018-0620-
+# WRITTEN BY:   Martin J. Maiers
+##############################################################################
+use strict;    # always
+use warnings;  # or else
+
+use lib ".";
+
+use CWD;
+
+while (<>) {
+  chomp;
+  my ($id, $loc, $pre1, $pre2, $raw1, $raw2) = split / /;
+  
+
+  # skip invalid HLA
+  next if $raw1 eq "None";
+  next if $raw2 eq "None";
+  
+  # skip blanks
+  next unless $raw1=~/\S/;
+  next unless $raw2=~/\S/;
+
+  # skip XX
+  next if $raw1 =~/\:XX/;
+  next if $raw2 =~/\:XX/;
+
+
+  # no locus only: effectively blank 
+  if ($raw1=~/\*/) {
+    my ($l1, $a1) = split /\*/, $raw1;
+    next unless $a1=~/\S/;
+  }
+  if ($raw2=~/\*/) {
+    my ($l2, $a2) = split /\*/, $raw2;
+    next unless $a2=~/\S/;
+  }
+    
+
+
+  # no MACs
+  my ($f11, $f12) = split /\:/, $raw1; 
+  next if !defined $f12 || $f12=~/[A-Z]/;
+
+  my ($f21, $f22) = split /\:/, $raw2; 
+  next if !defined $f22 || $f22=~/[A-Z]/;
+
+  $raw2 = $raw1 unless $raw2=~/[0-9]/;
+  $raw1 = $raw2 unless $raw1=~/[0-9]/;
+
+  my $typ1 = cleanHLA($loc, $raw1);
+  my $typ2 = cleanHLA($loc, $raw2);
+
+
+  
+
+
+  my $cwd1 = CWD::getCWDn($loc, $typ1, "CWD2");
+  my $cwd2 = CWD::getCWDn($loc, $typ2, "CWD2");
+  print join ('	', $id, $loc, $typ1, $typ2, $cwd1, $cwd2), "\n";
+}
+
+exit 0;
+
+sub cleanHLA {
+  my ($loc, $typ) = @_;
+  # reduce PG
+  if ($typ=~/(.*[0-9])[PG]$/) {
+    return $1;
+  } 
+  # reduce to two field
+  if ($typ=~/(.*[0-9]:\d+):(\d\d)/) {
+    return $1;
+  } 
+  # de-ambig
+  if ($typ=~/(.*)\//) {
+    return $1;
+  } 
+
+  return $typ;
+}
+

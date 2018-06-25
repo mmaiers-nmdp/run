@@ -1,0 +1,38 @@
+#!/usr/bin/env perl
+##############################################################################
+# SCRIPT NAME:	stub
+# DESCRIPTION:	
+# PARAMETERS:	none
+# OUTPUT:	
+# TABLES:       
+#
+# DATE WRITTEN: 2013-06-04
+# WRITTEN BY:   Martin J. Maiers
+#
+# REVISION HISTORY: 
+# REVISION DATE		REVISED BY	DESCRIPTION 
+# ------- ----------	--------------	-------------------------------------
+#
+#       COPYRIGHT (C) 2011 NATIONAL MARROW DONOR PROGRAM.  
+#               ALL RIGHTS RESERVED        
+##############################################################################
+use strict;    # always
+use warnings;  # or else
+
+use lib ".";
+
+use CWD;
+
+
+print join ('	', "C", "C*02:02:01", "CWD1");
+print "\n";
+print CWD::getCWD("C", "C*02:02:01", "CWD1");
+print "\n";
+
+
+print join ('	', "C", "C*02:02:01", "CWD2");
+print "\n";
+print CWD::getCWD("C", "C*02:02:01", "CWD2");
+print "\n";
+exit 0;
+

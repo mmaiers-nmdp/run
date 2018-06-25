@@ -1,0 +1,41 @@
+#!/usr/bin/env perl
+##############################################################################
+# SCRIPT NAME:	regions
+# DESCRIPTION:	lookup alleles by Solberg library
+#
+# DATE WRITTEN: 2018-06-25
+# WRITTEN BY:   Martin J. Maiers
+##############################################################################
+use strict;    # always
+use warnings;  # or else
+use Array::Utils qw(:all);
+use lib ".";
+use Solberg;
+
+print join ('	', qw/id loc t1 t2 c1 c2 r1 r1ct r2 r2ct i ict u uct locscore/), "\n";
+while (<>) {
+  chomp;
+  my ($id, $loc, $t1, $t2, $c1, $c2) = split /	/;
+  my @r1 = Solberg::getcont($t1);
+  my @r2 = Solberg::getcont($t2);
+  
+
+  my @i = intersect (@r1, @r2);
+  my @u = unique (@r1, @r2);
+
+  @r1 = () unless scalar @r1;
+  @r2 = () unless scalar @r2;
+  @u = () unless scalar @u;
+  @i = () unless scalar @i;
+  my $locscore = sprintf "%0.4f", (scalar @i)/ (scalar @u);
+
+  print join ('	', $id, $loc, $t1, $t2, $c1, $c2, 
+	scalar @r1 ? join (',', @r1) : "", scalar @r1,
+	scalar @r2 ? join (',', @r2) : "", scalar @r2,
+	scalar @i ? join (',', @i) : "", scalar @i,
+	scalar @u ? join (',', @u) : "", scalar @u,
+	$locscore), "\n";
+}
+
+exit 0;
+

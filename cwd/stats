@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+##############################################################################
+# SCRIPT NAME:	stats
+# DESCRIPTION:	
+#
+# DATE WRITTEN: 2018-06-24
+# WRITTEN BY:   Martin Maiers
+#
+##############################################################################
+use strict;    # always
+use warnings;  # or else
+
+
+my $file = "../output/global.2018-06-20.cwd.txt";
+open FILE, $file or die "$!: $file";
+
+my %P;
+while(<FILE>) {
+  chomp;
+  my ($id, $loc, $t1, $t2, $c1, $c2) = split /	/;
+  $P{$id}{$loc}{c1} = $c1;
+  $P{$id}{$loc}{c2} = $c2;
+}
+
+my $numloci=0;
+my %S;
+foreach my $id (keys %P) {
+  if (scalar keys %{$P{$id}} < 4) {
+    $numloci++;
+    next;
+  }
+  my @p;
+  foreach my $loc (keys %{$P{$id}}) {
+    push @p, $P{$id}{$loc}{c1}, $P{$id}{$loc}{c2};
+  }
+  my $score = join ('', sort (@p));
+  $S{$score}++;
+}
+
+foreach my $score (keys %S) {
+  print join ('	', $score, $S{$score}), "\n";
+}
+
+print STDERR "numloci too low: $numloci\n";
+
+exit 0;
+

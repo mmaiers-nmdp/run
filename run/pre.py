@@ -21,6 +21,8 @@
 #    > http://www.fsf.org/licensing/licenses/lgpl.html
 #    > http://www.opensource.org/licenses/lgpl-license.php
 #
+##############################################################################
+
 
 import argparse
 
@@ -30,17 +32,108 @@ parser = argparse.ArgumentParser(description='preprocessing HLA')
 # Required positional argument
 parser.add_argument('input_file', type=argparse.FileType('r'),
                     help='input file')
-parser.add_argument('output_file', type=argparse.FileType('w'),
-                    help='output file')
 
 # Optional argument
 parser.add_argument('--hladb_version', type=int,
                     help='HLADB version 3.31.0 would be 3310')
 
+# parse args
 args = parser.parse_args()
+infile = args.input_file.name
+hladb = args.hladb_version
 
-print("Preprocessing:")
-print(args.input_file)
-print(args.output_file)
-print(args.hladb_version)
+# set up ARD
+# TODO set a default hladb
+from pyard import ARD
+ard = ARD(str(hladb))
+
+import re
+def doloc(loc, t1, t2): 
+    
+    # trim extraneous whitespace
+    t1 = t1.strip()
+    t2 = t2.strip()
+
+    # explicit homozygous
+    if not re.search("[0-9][0-9]", t2):
+        t2 = t1
+    if not re.search("[0-9][0-9]", t1):
+        t1 = t2
+
+    # must have a colon
+    if not re.search(":", t1):
+        return t1, t2
+    if not re.search(":", t2):
+        return t1, t2
+
+    # make into loc*allele
+    if not re.search("\*", t1):
+        t1 = "*".join([loc, t1])
+    if not re.search("\*", t2):
+        t2 = "*".join([loc, t2])
+       
+    # trim G
+    m = re.search("(.*[0-9])[PG]", t1) 
+    if m:
+        t1 = m.group(1)
+       
+    m = re.search("(.*[0-9])[PG]", t2) 
+    if m:
+        t2 = m.group(1)
+
+    # trim shorthand like 07:04/11
+    m = re.search("(.*)\/", t1) 
+    if m:
+        t1 = m.group(1)
+    m = re.search("(.*)\/", t2) 
+    if m:
+        t2 = m.group(1)
+      
+    
+    r1 = ard.redux_gl(t1, 'lgx')
+    r2 = ard.redux_gl(t2, 'lgx')
+    return r1, r2
+    #gl = "+".join([t1, t2])
+    #return ard.redux_gl(gl, 'lgx')
+
+
+# parse input file
+import csv
+ifd = open(infile, "r")
+reader = csv.reader(ifd)
+
+
+for row in reader:
+    if (row[0] == "ION"):
+        header = row
+    else:
+        ion = row[0]
+        id  = row[1]
+        iid = ion + id
+        a1= row[9] 
+        a2= row[10]
+        b1= row[11] 
+        b2= row[12]
+        c1= row[13] 
+        c2= row[14]
+        drb1_2= row[15]
+        drb1_1= row[16] 
+
+        (na1, na2) = doloc("A", a1, a2)
+        print (iid, "A", a1, a2, na1, na2)
+
+        (nb1, nb2) = doloc("B", b1, b2)
+        print (iid, "B", b1, b2, nb1, nb2)
+
+        (nc1, nc2) = doloc("C", c1, c2)
+        print (iid, "C", c1, c2, nc1, nc2)
+
+        (ndrb1_1, ndrb1_b2) = doloc("DRB1", drb1_1, drb1_2)
+        print (iid, "DRB1", drb1_1, drb1_2, ndrb1_1, ndrb1_b2)
+
+
+ifd.close()  # close the file
+
+
+
 

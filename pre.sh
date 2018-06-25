@@ -3,11 +3,10 @@
 INPUT_DIR=./input
 OUTPUT_DIR=./output
 
-INPUT_FILE="${INPUT_DIR}/2018-06-15RUNconsolidated.csv"
-OUTPUT_FILE="${OUTPUT_DIR}/2018-06-15pre.txt"
+INPUT_FILE="${INPUT_DIR}/global.2018-06-20.csv"
+OUTPUT_FILE="${OUTPUT_DIR}/global.2018-06-20.pre.txt"
 
-HLADB_VERSION=3290
+HLADB_VERSION=3320
 
-set -x
-python run/pre.py ${INPUT_FILE} ${OUTPUT_FILE} --hladb_version 3290
+python run/pre.py ${INPUT_FILE} --hladb_version ${HLADB_VERSION} > ${OUTPUT_FILE}
 
