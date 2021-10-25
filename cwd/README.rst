@@ -30,4 +30,6 @@ grep -v "/" out.flagCWD |grep -v XX |grep -v None |sort -k 5,6 |grep -v "     [1
 o
 
 
+./stats |grep rare >../output/t2.rare.txt
+
 	

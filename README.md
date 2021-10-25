@@ -1,29 +1,9 @@
-===============================
-RUN
-===============================
+# RUN
 
+##Regigstry of Unmet Need analysis pipeline
 
-.. image:: https://img.shields.io/pypi/v/run.svg
-        :target: https://pypi.python.org/pypi/run
-
-.. image:: https://img.shields.io/travis/mmaiers-nmdp/run.svg
-        :target: https://travis-ci.org/mmaiers-nmdp/run
-
-.. image:: https://readthedocs.org/projects/run/badge/?version=latest
-        :target: https://run.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-.. image:: https://pyup.io/repos/github/mmaiers-nmdp/run/shield.svg
-     :target: https://pyup.io/repos/github/mmaiers-nmdp/run/
-     :alt: Updates
-
-
-Regigstry of Unmet Need analysis pipeline
-
-
+* analysis of a cohort (not included) of patients with no match in the global collected regisries of the World Marrow Donor Assocation [WMDA] (http://wmda.info)
 * Free software: LGPL v3
-* Documentation: https://run.readthedocs.io.
-
 
 Features
 --------
@@ -36,13 +16,18 @@ populations that can be identified as a target for future recruitment.
 
 Preprocessing
 -------------
-
+```
+./pre.sh
+```
   1. vaidate HLA types
   2. convert to glstring
   3. reduce to ARD
 
 Allele analysis
 ---------------
+```
+cwd/cwd.sh
+```
   1. CWD for 8 alleles (A, B, C, DRB1) x 2
   2. identify how many are not in CWD list
   3. Global region analysis for 8 alleles 
@@ -62,5 +47,4 @@ Haplotype Analysis
 
 Credits
 -------
-World Marrow Donor Assocation `WMDA
-<http://wmda.info/>`_.
+World Marrow Donor Assocation [WMDA] (http://wmda.info)

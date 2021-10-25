@@ -12,6 +12,8 @@ use warnings;  # or else
 
 
 my $file = "../output/global.2018-06-20.cwd.txt";
+#$file = "../output/us.match.2018-06-26.cwd.txt";
+$file = "../output/t2.cwd.txt";
 open FILE, $file or die "$!: $file";
 
 my %P;
@@ -20,6 +22,9 @@ while(<FILE>) {
   my ($id, $loc, $t1, $t2, $c1, $c2) = split /	/;
   $P{$id}{$loc}{c1} = $c1;
   $P{$id}{$loc}{c2} = $c2;
+
+  print "$id\trare\t$t1\n" unless $c1;
+  print "$id\trare\t$t2\n" unless $c2;
 }
 
 my $numloci=0;
