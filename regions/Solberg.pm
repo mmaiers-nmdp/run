@@ -29,7 +29,7 @@ sub getcont {
     my $c = $C{$pop};
     $R{$c}++;
   }
-  return sort keys %R;
+  return (sort keys %R);
 }
 
 sub get_threshold {
@@ -49,6 +49,7 @@ sub initialize {
     chomp;
     my ($dataset, $pop, $contin, $complex, $lat, $long, $coord, 
           $loc, $av2, $av3, $freq, $count, $gametes) = split /	/;
+    next if $contin eq "OTH";
     $D{$loc}{$av3}{$pop}=$freq;
     $C{$pop} = $contin;
   }

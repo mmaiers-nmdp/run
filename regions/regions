@@ -8,7 +8,6 @@
 ##############################################################################
 use strict;    # always
 use warnings;  # or else
-use Array::Utils qw(:all);
 use lib ".";
 use Solberg;
 
@@ -18,24 +17,57 @@ while (<>) {
   my ($id, $loc, $t1, $t2, $c1, $c2) = split /	/;
   my @r1 = Solberg::getcont($t1);
   my @r2 = Solberg::getcont($t2);
-  
 
-  my @i = intersect (@r1, @r2);
-  my @u = unique (@r1, @r2);
+  my @i = take_intersection (\@r1, \@r2);
+  if (scalar @r1 and !scalar @r2) { @i = @r1; }
+  if (scalar @r2 and !scalar @r1) { @i = @r2; }
+  my @u = take_union (\@r1, \@r2);
 
-  @r1 = () unless scalar @r1;
-  @r2 = () unless scalar @r2;
-  @u = () unless scalar @u;
-  @i = () unless scalar @i;
-  my $locscore = sprintf "%0.4f", (scalar @i)/ (scalar @u);
+  @r1 = () unless defined $r1[0] && $r1[0];
+  @r2 = () unless defined $r2[0] && $r2[0];
+
+  @u = () unless defined $u[0] && $u[0];
+  @i = () unless defined $i[0] && $i[0];
+
+  my $locscore = sprintf "%0.4f", scalar @u ? (scalar @i)/ (scalar @u) : 0;
 
   print join ('	', $id, $loc, $t1, $t2, $c1, $c2, 
-	scalar @r1 ? join (',', @r1) : "", scalar @r1,
-	scalar @r2 ? join (',', @r2) : "", scalar @r2,
-	scalar @i ? join (',', @i) : "", scalar @i,
-	scalar @u ? join (',', @u) : "", scalar @u,
+	defined $r1[0] ? join (',', @r1) : "", scalar @r1,
+	defined $r2[0] ? join (',', @r2) : "", scalar @r2,
+	defined $i[0] ? join (',', @i) : "", scalar @i,
+	defined $u[0] ? join (',', @u) : "", scalar @u,
 	$locscore), "\n";
 }
 
 exit 0;
 
+
+sub take_intersection {
+  my ($r1, $r2) = @_;
+
+  my %S1;
+  my %I;
+
+  foreach my $e1 (@{$r1}) {
+    next unless defined $e1;
+    $S1{$e1}++;
+  }
+  foreach my $e2 (@{$r2}) {
+    $I{$e2}++ if defined $e2 && $S1{$e2};
+  }
+  return (sort keys %I);
+}
+
+sub take_union {
+  my ($r1, $r2) = @_;
+
+  my %U;
+
+  foreach my $e1 (@{$r1}) {
+    $U{$e1}++ if defined $e1;
+  }
+  foreach my $e2 (@{$r2}) {
+    $U{$e2}++ if defined $e2;
+  }
+  return (sort keys %U);
+}

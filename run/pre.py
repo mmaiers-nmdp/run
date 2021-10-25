@@ -110,26 +110,26 @@ for row in reader:
         ion = row[0]
         id  = row[1]
         iid = ion + id
-        a1= row[9] 
-        a2= row[10]
-        b1= row[11] 
-        b2= row[12]
-        c1= row[13] 
-        c2= row[14]
-        drb1_2= row[15]
-        drb1_1= row[16] 
+        a1= row[11] 
+        a2= row[12]
+        b1= row[13] 
+        b2= row[14]
+        c1= row[15] 
+        c2= row[16]
+        drb1_2= row[17]
+        drb1_1= row[18] 
 
         (na1, na2) = doloc("A", a1, a2)
-        print (iid, "A", a1, a2, na1, na2)
+        print (','.join([iid, "A", a1, a2, na1, na2]))
 
         (nb1, nb2) = doloc("B", b1, b2)
-        print (iid, "B", b1, b2, nb1, nb2)
+        print (','.join([iid, "B", b1, b2, nb1, nb2]))
 
         (nc1, nc2) = doloc("C", c1, c2)
-        print (iid, "C", c1, c2, nc1, nc2)
+        print (','.join([iid, "C", c1, c2, nc1, nc2]))
 
         (ndrb1_1, ndrb1_b2) = doloc("DRB1", drb1_1, drb1_2)
-        print (iid, "DRB1", drb1_1, drb1_2, ndrb1_1, ndrb1_b2)
+        print (','.join([iid, "DRB1", drb1_1, drb1_2, ndrb1_1, ndrb1_b2]))
 
 
 ifd.close()  # close the file
